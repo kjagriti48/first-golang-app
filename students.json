@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Simpy",
+    "age": 30,
+    "marks": {
+      "english": 70,
+      "math": 70,
+      "science": 62
+    },
+    "status": "fail"
+  },
+  {
+    "name": "Neha",
+    "age": 31,
+    "marks": {
+      "english": 80,
+      "math": 80,
+      "science": 82
+    },
+    "status": "pass"
+  },
+  {
+    "name": "Neha",
+    "age": 31,
+    "marks": {
+      "english": 80,
+      "math": 80,
+      "science": 82
+    },
+    "status": "pass"
+  }
+]
