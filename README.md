@@ -11,6 +11,10 @@ A modular Go backend that manages student records, calculates average marks, det
 •⁠  ⁠⁠ GET /top-student ⁠ to return the highest scorer
 •⁠  ⁠File persistence using ⁠ students.json ⁠
 •⁠  ⁠Status logic: ⁠ pass ⁠ or ⁠ fail ⁠ based on average
+•⁠  ⁠Input Validation for POST requests
+•⁠  Error response structure using 'writeError()'
+•⁠  ⁠HTTP Status codes: 400, 404, 201
+•⁠  ⁠Cleaner JSON formatting for all endpoints
 
 ---
 
@@ -33,3 +37,5 @@ Add a student.
     "science": 95
   }
 }
+
+
