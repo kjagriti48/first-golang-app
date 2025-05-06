@@ -28,5 +28,55 @@
       "science": 82
     },
     "status": "pass"
+  },
+  {
+    "name": "Jagriti",
+    "age": -1,
+    "marks": {
+      "english": 80,
+      "math": 80,
+      "science": 82
+    },
+    "status": "pass"
+  },
+  {
+    "name": "Jagriti",
+    "age": 0,
+    "marks": {
+      "english": 80,
+      "math": 80,
+      "science": 82
+    },
+    "status": "pass"
+  },
+  {
+    "name": "Jagriti",
+    "age": 32,
+    "marks": {
+      "english": 80,
+      "math": 80,
+      "science": 82
+    },
+    "status": "pass"
+  },
+  {
+    "name": "Jagriti",
+    "age": 32,
+    "marks": {
+      "english": 80,
+      "math": 0,
+      "science": 82
+    },
+    "status": "fail"
+  },
+  {
+    "name": "Jagriti",
+    "age": 32,
+    "marks": {
+      "english": 80,
+      "math": 80,
+      "science": 82
+    },
+    "status": "pass"
   }
 ]
