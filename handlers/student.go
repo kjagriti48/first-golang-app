@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"first-golang-app/models"
 	"first-golang-app/utils"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -65,6 +66,7 @@ func addStudent(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(s)
+	log.Printf("Added Student: %s", s.Name)
 }
 
 func deleteStudentByName(w http.ResponseWriter, r *http.Request) {
@@ -92,6 +94,7 @@ func deleteStudentByName(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	json.NewEncoder(w).Encode(map[string]string{"message": "Student deleted successfully"})
+	log.Printf("Deleted Student: %s", name)
 }
 
 func TopStudentHandler(w http.ResponseWriter, r *http.Request) {
@@ -114,6 +117,7 @@ func TopStudentHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(top)
+	log.Printf("Top Student Requested")
 }
 func writeError(w http.ResponseWriter, status int, message string) {
 	w.Header().Set("Content-Type", "application/json")

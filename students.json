@@ -78,5 +78,15 @@
       "science": 82
     },
     "status": "pass"
+  },
+  {
+    "name": "Meera",
+    "age": 57,
+    "marks": {
+      "english": 80,
+      "math": 80,
+      "science": 82
+    },
+    "status": "pass"
   }
 ]
