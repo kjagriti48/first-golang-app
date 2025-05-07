@@ -46,7 +46,7 @@ Example JSON body:
   }
 }
 
-### `git aDELETE /students/{name}`
+### `DELETE /students/{name}`
 Deletes a student by their name.
 
 GET /top-student
