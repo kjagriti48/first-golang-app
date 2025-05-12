@@ -1,91 +1,11 @@
 [
   {
-    "name": "Simpy",
-    "age": 30,
-    "marks": {
-      "english": 70,
-      "math": 70,
-      "science": 62
-    },
-    "status": "fail"
-  },
-  {
-    "name": "Neha",
-    "age": 31,
-    "marks": {
-      "english": 80,
-      "math": 80,
-      "science": 82
-    },
-    "status": "pass"
-  },
-  {
-    "name": "Neha",
-    "age": 31,
-    "marks": {
-      "english": 80,
-      "math": 80,
-      "science": 82
-    },
-    "status": "pass"
-  },
-  {
-    "name": "Jagriti",
-    "age": -1,
-    "marks": {
-      "english": 80,
-      "math": 80,
-      "science": 82
-    },
-    "status": "pass"
-  },
-  {
-    "name": "Jagriti",
-    "age": 0,
-    "marks": {
-      "english": 80,
-      "math": 80,
-      "science": 82
-    },
-    "status": "pass"
-  },
-  {
     "name": "Jagriti",
     "age": 32,
     "marks": {
       "english": 80,
       "math": 80,
-      "science": 82
-    },
-    "status": "pass"
-  },
-  {
-    "name": "Jagriti",
-    "age": 32,
-    "marks": {
-      "english": 80,
-      "math": 0,
-      "science": 82
-    },
-    "status": "fail"
-  },
-  {
-    "name": "Jagriti",
-    "age": 32,
-    "marks": {
-      "english": 80,
-      "math": 80,
-      "science": 82
-    },
-    "status": "pass"
-  },
-  {
-    "name": "Meera",
-    "age": 57,
-    "marks": {
-      "english": 80,
-      "math": 80,
-      "science": 82
+      "science": 72
     },
     "status": "pass"
   }

@@ -23,8 +23,32 @@ func StudentHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func getStudents(w http.ResponseWriter, r *http.Request) {
+	rows, err := utils.DB.Query("SELECT name, age, marks, status FROM students")
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "Failed to fetch students from the database")
+		return
+	}
+
+	defer rows.Close()
+
+	students := make([]models.Student, 0)
+
+	for rows.Next() {
+		var s models.Student
+		var marksText string
+
+		err := rows.Scan(&s.Name, &s.Age, &marksText, &s.Status)
+		if err != nil {
+			log.Printf("Scan failed: %v, err")
+			writeError(w, http.StatusInternalServerError, "Error reading student record")
+			return
+		}
+
+		json.Unmarshal([]byte(marksText), &s.Marks)
+		students = append(students, s)
+	}
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(models.Students)
+	json.NewEncoder(w).Encode(students)
 }
 
 func addStudent(w http.ResponseWriter, r *http.Request) {
@@ -61,8 +85,24 @@ func addStudent(w http.ResponseWriter, r *http.Request) {
 		s.Status = "fail"
 	}
 
-	models.Students = append(models.Students, s)
-	utils.SaveStudentsToFile()
+	//Convert marks map to JSON string
+	marksJSON, err := json.Marshal(s.Marks)
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "Failed to encode marks")
+		return
+	}
+
+	//Insert into DB
+	_, err = utils.DB.Exec(
+		`INSERT INTO students (name, age, marks, status) VALUES (?, ?, ?, ?)`,
+		s.Name, s.Age, string(marksJSON), s.Status,
+	)
+
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "Could not insert into database")
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(s)
@@ -75,21 +115,18 @@ func deleteStudentByName(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusBadRequest, "Student name required in path")
 		return
 	}
-	found := false
-	var updated []models.Student
-	for _, s := range models.Students {
-		if s.Name != name {
-			updated = append(updated, s)
-		} else {
-			found = true
-		}
-	}
-	if !found {
-		http.Error(w, "Student not found", http.StatusNotFound)
+
+	result, err := utils.DB.Exec("DELETE FROM students WHERE name = ?", name)
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "Failed to delete student")
 		return
 	}
-	models.Students = updated
-	utils.SaveStudentsToFile()
+
+	rowsAffected, _ := result.RowsAffected()
+	if rowsAffected == 0 {
+		writeError(w, http.StatusNotFound, "Student not found")
+		return
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 
@@ -100,21 +137,49 @@ func deleteStudentByName(w http.ResponseWriter, r *http.Request) {
 func TopStudentHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		writeError(w, http.StatusMethodNotAllowed, "Method not allowed")
-	}
-
-	if len(models.Students) == 0 {
-		writeError(w, http.StatusNotFound, "No students Found")
 		return
 	}
-	top := models.Students[0]
-	topAvg := utils.CalculateAverage(top.Marks)
-	for _, s := range models.Students[1:] {
+
+	rows, err := utils.DB.Query("SELECT name, age, marks, status FROM students")
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "Failed to fetch students")
+		return
+	}
+
+	defer rows.Close()
+
+	var top models.Student
+	var topAvg float64
+	found := false
+
+	for rows.Next() {
+		var s models.Student
+		var marksJSON string
+
+		err := rows.Scan(&s.Name, &s.Age, &marksJSON, &s.Status)
+		if err != nil {
+			log.Printf("Scan failed: %v", err)
+			writeError(w, http.StatusInternalServerError, "Error reading student")
+			return
+		}
+		err = json.Unmarshal([]byte(marksJSON), &s.Marks)
+		if err != nil {
+			log.Printf("Failed to unmarshal marks for %s: %v", s.Name, err)
+			continue
+		}
 		avg := utils.CalculateAverage(s.Marks)
-		if avg > topAvg {
+		if !found || avg > topAvg {
 			top = s
 			topAvg = avg
+			found = true
 		}
+
 	}
+	if !found {
+		writeError(w, http.StatusNotFound, "No students found")
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(top)
 	log.Printf("Top Student Requested")
