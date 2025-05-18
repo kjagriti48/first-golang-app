@@ -39,7 +39,7 @@ func getStudents(w http.ResponseWriter, r *http.Request) {
 
 		err := rows.Scan(&s.Name, &s.Age, &marksText, &s.Status)
 		if err != nil {
-			log.Printf("Scan failed: %v, err")
+			log.Printf("Scan failed: %v", err)
 			writeError(w, http.StatusInternalServerError, "Error reading student record")
 			return
 		}
