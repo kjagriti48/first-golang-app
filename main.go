@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	utils.InitDB("students.db")
+	utils.InitDB()
 	utils.PrintAllStudents()
 	//utils.LoadStudentsFromFile()
 	routes.RegisterRoutes()

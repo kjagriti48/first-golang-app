@@ -53,6 +53,7 @@ func getStudents(w http.ResponseWriter, r *http.Request) {
 
 func addStudent(w http.ResponseWriter, r *http.Request) {
 	var s models.Student
+
 	err := json.NewDecoder(r.Body).Decode(&s)
 	if err != nil {
 		writeError(w, http.StatusBadRequest, "Invalid JSON")
@@ -94,11 +95,12 @@ func addStudent(w http.ResponseWriter, r *http.Request) {
 
 	//Insert into DB
 	_, err = utils.DB.Exec(
-		`INSERT INTO students (name, age, marks, status) VALUES (?, ?, ?, ?)`,
+		`INSERT INTO students (name, age, marks, status) VALUES ($1, $2, $3, $4)`,
 		s.Name, s.Age, string(marksJSON), s.Status,
 	)
 
 	if err != nil {
+		log.Printf("Insert failed: %v", err)
 		writeError(w, http.StatusInternalServerError, "Could not insert into database")
 		return
 	}

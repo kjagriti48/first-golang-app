@@ -10,7 +10,14 @@ import (
 )
 
 func TestAddStudentCases(t *testing.T) {
-	utils.InitDB("students.db")
+	utils.InitDB()
+
+	//Clean table before testing
+	_, err := utils.DB.Exec("DELETE FROM students")
+	if err != nil {
+		t.Fatalf("Failed to clear table, %v", err)
+	}
+
 	tests := []struct {
 		name           string
 		body           string

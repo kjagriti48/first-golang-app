@@ -4,20 +4,27 @@ import (
 	"database/sql"
 	"fmt"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/lib/pq"
 )
 
 var DB *sql.DB
 
-func InitDB(filepath string) {
+func InitDB() {
+
+	connStr := "postgres://localhost/studentdb?sslmode=disable"
+
 	var err error
-	DB, err = sql.Open("sqlite3", filepath)
+	DB, err = sql.Open("postgres", connStr)
 	if err != nil {
-		panic(err)
+		panic(fmt.Sprintf("Failed to connect to PostgreSQL: %v", err))
 	}
 
+	err = DB.Ping()
+	if err != nil {
+		panic(fmt.Sprintf("Database unreachable: %v", err))
+	}
 	createTable := `
-CREATE TABLE IF NOT EXISTS students (
+		CREATE TABLE IF NOT EXISTS students (
 		name TEXT PRIMARY KEY,
 		age INTEGER,
 		marks TEXT,
@@ -26,10 +33,10 @@ CREATE TABLE IF NOT EXISTS students (
 
 	_, err = DB.Exec(createTable)
 	if err != nil {
-		panic(err)
+		panic(fmt.Sprintf("Failed to create table: %v", err))
 	}
 
-	fmt.Println("SQLite database initialized.")
+	fmt.Println("Connected to PostgreSQL and ready ")
 
 }
 
