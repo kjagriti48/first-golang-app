@@ -118,8 +118,9 @@ func deleteStudentByName(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := utils.DB.Exec("DELETE FROM students WHERE name = ?", name)
+	result, err := utils.DB.Exec("DELETE FROM students WHERE name = $1", name)
 	if err != nil {
+		log.Printf("Delete failed: %v", err)
 		writeError(w, http.StatusInternalServerError, "Failed to delete student")
 		return
 	}
