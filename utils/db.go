@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+	"strings"
 
 	_ "github.com/lib/pq"
 )
@@ -11,7 +12,10 @@ import (
 var DB *sql.DB
 
 func InitDB() {
-	connStr := os.Getenv("DATABASE_URL")
+	raw := os.Getenv("DATABASE_URL")
+
+	// Replace "postgresql" with "postgres"
+	connStr := strings.Replace(raw, "postgresql://", "postgres://", 1)
 
 	var err error
 	DB, err = sql.Open("postgres", connStr)
