@@ -13,7 +13,7 @@ var DB *sql.DB
 
 func InitDB() {
 	raw := os.Getenv("DATABASE_URL")
-
+	fmt.Printf("🚨 DATABASE_URL = %s\n", raw) // <== ADD THIS
 	// Replace "postgresql" with "postgres"
 	connStr := strings.Replace(raw, "postgresql://", "postgres://", 1)
 
