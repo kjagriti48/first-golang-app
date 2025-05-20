@@ -1,69 +1,97 @@
-# 🎓 Student Management API (Golang)
+# 🚀 Student Management API (Go + PostgreSQL + JWT)
 
-A modular, file-persistent REST API built in Go to manage student records, calculate average scores, determine top performers, and return clean JSON responses with proper validation and logging.
-
----
-
-## 📦 Project Structure
----
-first-golang-app/
-├── main.go
-├── go.mod
-├── routes/
-├── handlers/
-├── models/
-├── utils/
-└── students.json
-
-## 🔧 Features
-
-- ✅ Modular folder structure: `handlers`, `routes`, `models`, `utils`
-- ✅ REST endpoints for student creation, listing, deletion
-- ✅ Top student identification
-- ✅ File-based JSON persistence
-- ✅ Input validation & structured error responses
-- ✅ Logging of every request and action (Day 12)
+A production-ready backend API built with Go, PostgreSQL, and JWT authentication. Deployed on Railway.
 
 ---
 
-## 🔗 API Endpoints
+## 🌐 Live API
 
-### `GET /students`
-Returns all students in the system.
+Base URL:  
+`https://first-golang-app-production.up.railway.app`
 
-### `POST /students`
-Adds a new student.  
-Example JSON body:
+---
+
+## 🧠 Features
+
+- JWT authentication (signup/login)
+- Middleware-based route protection
+- PostgreSQL persistence
+- RESTful structure
+- Modular project layout
+- Cloud-deployed via Railway
+
+---
+
+## 📦 Endpoints
+
+### 🔐 `POST /signup`
+
+Registers a new user.
+
+**Request body:**
 
 ```json
+{
+  "username": "admin",
+  "password": "secure123"
+}
+
+🔐 POST /login
+Logs in and returns a JWT token.
+
+Request body:
+
+{
+  "username": "admin",
+  "password": "secure123"
+}
+
+Response:
+
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6..."
+}
+
+🔐 GET /students (Protected)
+Returns the list of students.
+Requires Authorization header:
+
+Authorization: Bearer <your_token>
+
+🔐 POST /students (Protected)
+Adds a student.
+
 {
   "name": "Arjun",
   "age": 20,
   "marks": {
     "math": 90,
-    "english": 85,
-    "science": 95
+    "science": 85
   }
 }
 
-### `DELETE /students/{name}`
-Deletes a student by their name.
+🔐 DELETE /students/{name} (Protected)
+Deletes a student by name.
 
-GET /top-student
+
+🔐 GET /top-student (Protected)
 Returns the student with the highest average score.
 
-⚠️ Input Validation
-name is required
+🧪 How to Test with Postman
+POST /signup → create a user
 
-age must be greater than 0
+POST /login → receive token
 
-At least one subject mark must be provided
+Use the token in the Authorization header for all other requests
+Authorization: Bearer <token>
 
-Error responses are returned in JSON:
+🛠️ Tech Stack
+Go 1.21
+PostgreSQL (via Railway)
+golang-jwt for auth
+bcrypt for hashing
+Hosted on Railway
 
-json
-Copy
-Edit
-{
-  "error": "Name is required"
-}
+
+👤 Author
+Created by Jagriti.
