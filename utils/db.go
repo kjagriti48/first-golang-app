@@ -12,9 +12,17 @@ import (
 var DB *sql.DB
 
 func InitDB() {
-	raw := os.Getenv("DATABASE_URL")
-	fmt.Printf("🚨 DATABASE_URL = %s\n", raw) // <== ADD THIS
+	//raw := os.Getenv("DATABASE_URL")
+	//fmt.Printf("🚨 DATABASE_URL = %s\n", raw) // <== ADD THIS
 	// Replace "postgresql" with "postgres"
+	//connStr := strings.Replace(raw, "postgresql://", "postgres://", 1)
+
+	raw := os.Getenv("DATABASE_URL")
+	if raw == "" {
+		panic("🚨 DATABASE_URL is EMPTY at runtime")
+	}
+	fmt.Printf("🚨 DATABASE_URL found: %s\n", raw)
+
 	connStr := strings.Replace(raw, "postgresql://", "postgres://", 1)
 
 	var err error
