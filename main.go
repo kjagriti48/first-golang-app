@@ -11,7 +11,7 @@ import (
 
 func main() {
 	utils.InitDB()
-	utils.PrintAllStudents()
+	//utils.PrintAllStudents()
 	//utils.LoadStudentsFromFile()
 	routes.RegisterRoutes()
 
