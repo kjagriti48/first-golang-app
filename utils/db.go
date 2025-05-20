@@ -3,6 +3,7 @@ package utils
 import (
 	"database/sql"
 	"fmt"
+	"os"
 
 	_ "github.com/lib/pq"
 )
@@ -11,12 +12,13 @@ var DB *sql.DB
 
 func InitDB() {
 
-	connStr := "postgres://localhost/studentdb?sslmode=disable"
+	//connStr := "postgres://localhost/studentdb?sslmode=disable"
+	connStr := os.Getenv("DATABASE_URL")
 
 	var err error
 	DB, err = sql.Open("postgres", connStr)
 	if err != nil {
-		panic(fmt.Sprintf("Failed to connect to PostgreSQL: %v", err))
+		panic(fmt.Sprintf("Failed to connect: %v", err))
 	}
 
 	err = DB.Ping()
