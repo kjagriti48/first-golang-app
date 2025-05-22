@@ -8,13 +8,14 @@ import (
 )
 
 func RegisterRoutes() {
-	//http.HandleFunc("/students", utils.LogRequest(utils.JSONOnly(handlers.StudentHandler)))
-	http.HandleFunc("/students/", utils.LogRequest(handlers.StudentHandler))
-	http.HandleFunc("/top-student", utils.LogRequest(handlers.TopStudentHandler))
+	// Public endpoints
 	http.HandleFunc("/signup", utils.EnableCORS(handlers.SignUpHandler))
 	http.HandleFunc("/login", utils.EnableCORS(handlers.LoginHandler))
+
+	// Protected endpoints
 	http.HandleFunc("/students", utils.EnableCORS(utils.JWTMiddleware(handlers.StudentHandler)))
-	//http.HandleFunc("/students", utils.JWTMiddleware(handlers.StudentHandler))
+	http.HandleFunc("/students/", utils.EnableCORS(utils.JWTMiddleware(handlers.StudentHandler)))
+	http.HandleFunc("/top-student", utils.EnableCORS(utils.JWTMiddleware(handlers.TopStudentHandler)))
 }
 
 func logRequest(handler http.HandlerFunc) http.HandlerFunc {
