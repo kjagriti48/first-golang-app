@@ -31,6 +31,10 @@ func JSONOnly(next http.HandlerFunc) http.HandlerFunc {
 
 var jwtKey = []byte("my-secret-key")
 
+type contextKey string
+
+const usernameKey contextKey = "username"
+
 func JWTMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
@@ -53,8 +57,25 @@ func JWTMiddleware(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		ctx := context.WithValue(r.Context(), "username", claims["username"])
+		ctx := context.WithValue(r.Context(), usernameKey, claims["username"])
 		next.ServeHTTP(w, r.WithContext(ctx))
 	}
 
+}
+
+func EnableCORS(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// 👇 Customize this as needed
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+
+		// Handle preflight
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+
+		next(w, r)
+	}
 }
