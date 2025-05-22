@@ -11,9 +11,9 @@ func RegisterRoutes() {
 	//http.HandleFunc("/students", utils.LogRequest(utils.JSONOnly(handlers.StudentHandler)))
 	http.HandleFunc("/students/", utils.LogRequest(handlers.StudentHandler))
 	http.HandleFunc("/top-student", utils.LogRequest(handlers.TopStudentHandler))
-	http.HandleFunc("/signup", handlers.SignUpHandler)
-	http.HandleFunc("/login", handlers.LoginHandler)
-	http.HandleFunc("/students", utils.LogRequest(utils.JWTMiddleware(handlers.StudentHandler)))
+	http.HandleFunc("/signup", utils.EnableCORS(handlers.SignUpHandler))
+	http.HandleFunc("/login", utils.EnableCORS(handlers.LoginHandler))
+	http.HandleFunc("/students", utils.EnableCORS(utils.JWTMiddleware(handlers.StudentHandler)))
 	//http.HandleFunc("/students", utils.JWTMiddleware(handlers.StudentHandler))
 }
 
