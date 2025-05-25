@@ -12,7 +12,10 @@ function Login({ setToken }) {
   
     try {
       const data = await loginUser({ username, password });
+      console.log("LOGIN RESPONSE:", data);
       setToken(data.token); // ✅ very important
+      localStorage.setItem("token", data.token); // ✅ Save to localStorage
+
     } catch {
       setError("Login failed"); // ❌ this will show if token not received
     }
